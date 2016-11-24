@@ -1,6 +1,11 @@
 # react-native-tetris
 A pure javascript tetris game for React Native framework.
 
+##Todo
+
+1. Handle null exceptions when rotating neard the wall or blocks.
+2. Add a drop button.
+
 ###Demo
 
 ![alt tag](https://raw.githubusercontent.com/ggomaeng/react-native-tetris/master/demo.gif)
