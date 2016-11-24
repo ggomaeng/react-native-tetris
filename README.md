@@ -4,7 +4,9 @@ A pure javascript tetris game for React Native framework.
 ## Todo
 
 0.5. Fix the row clearing issue
+
 1. Handle null exceptions when rotating neard the wall or blocks.
+
 2. Add a drop button.
 
 ## #Demo
