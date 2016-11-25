@@ -86,7 +86,7 @@ export default class CreateBlock extends Component {
     renderBlockGrid() {
         var size = 10;
         var {color} = this.state;
-        console.log('rendering grid');
+        // console.log('rendering grid');
         return this.state.grid.map((row, i) => {
             return (
                 <View key={i} style={{flexDirection: 'row'}}>

@@ -1,7 +1,10 @@
 /**
  * Created by ggoma on 2016. 11. 23..
  */
-export function rotate(type, points, rotation) {
+export function rotate(type, p, rotation) {
+    var points = p;
+
+
     if(type == 'T') {
         rotation = rotation % 4;
         if(rotation == 1) {
@@ -28,7 +31,7 @@ export function rotate(type, points, rotation) {
     } else if(type == 'I') {
         rotation = rotation % 2;
         console.log('rotating I');
-        console.log(points);
+        // console.log(points);
         if(rotation == 1){
             points[0][0] -= 1;
             points[0][1] += 2;
@@ -166,4 +169,21 @@ export function rotate(type, points, rotation) {
     }
     
     return points;
+}
+
+function canRotate(points) {
+    var validRotation = true;
+    points.map((point) => {
+        if(point[0] == null) {
+            console.log('invalid rotation');
+            validRotation = false;
+        }
+
+        if(point[1] == null){
+            console.log('invalid rotation');
+            validRotation = false;
+        }
+    });
+
+    return validRotation
 }

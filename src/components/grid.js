@@ -33,6 +33,7 @@ export default class Grid extends Component {
         this.grid = [];
         this.currentBlock = 'J';
         this.rotation = 0;
+        this.speed = 450;
         this.changeColor = this.changeColor.bind(this);
         this.checkColor = this.checkColor.bind(this);
 
@@ -66,7 +67,7 @@ export default class Grid extends Component {
         this.loadNextBlock();
         this.interval = setInterval(() => {
             this.tick()
-        }, 250)
+        }, this.speed)
     }
 
     tryAgain() {
@@ -111,21 +112,51 @@ export default class Grid extends Component {
         this.rotation += 1;
         var color;
         var points = [];
+        var previous = [];
         for(i = 4; i < 24; i++) { //h is 20, so i want 20 rows
             for(j = 0; j < 10; j++) { // w is 10
                 if(belongs(this.checkColor(i, j))){
                     color = this.checkColor(i,j);
                     this.changeColor(i,j, 'white');
                     points.push([i, j]);
+                    previous.push([i,j]);
                 }
             }
         }
 
-
         var rotated = rotate(this.currentBlock, points, this.rotation);
-        rotated.map((point) => {
-            this.changeColor(point[0], point[1], color);
+        if(this.canRotate(rotated)) {
+            console.log('valid rotation');
+            rotated.map((point) => {
+                this.changeColor(point[0], point[1], color);
+            });
+        } else {
+            console.log('invalid rotation');
+            previous.map((point) => {
+                this.changeColor(point[0], point[1], color);
+            });
+        }
+
+    }
+
+    canRotate(p) {
+        var points = p;
+        var canRotate = true;
+        // console.log(points);
+        points.map((point) => {
+            if(point[0] == null || point[1] == null) {
+                canRotate = false;
+            } else {
+                if(this.checkColor(point[0], point[1]) == null) {
+                    canRotate = false;
+                }
+                if(this.checkColor(point[0], point[1]) == 'gray') {
+                    canRotate = false;
+                }
+            }
+
         });
+        return canRotate;
     }
 
 
@@ -244,47 +275,51 @@ export default class Grid extends Component {
 
     }
 
-    shiftColorDownFrom(row) {
+    clearRow(row) {
+        console.log('clearing row', row);
         for (j = 0; j < 10; j++){
             this.changeColor(row, j, 'white');
         }
-        // console.log('shifting down starting from', row);
-        for(i = row; i >= 4; i--) {
-            if(this.grid[i-1] != null && !(this.grid[i-1].includes(1))){
-                console.log('breaking on row', i);
-                break;
-            }
-            for(j = 0; j < 10; j++) {
-                var color_up = this.checkColor(i-1, j);
-                if(color_up == 'gray') {
-                    this.changeColor(i, j, 'gray');
-                    this.changeColor(i-1, j, 'white');
+
+        for (i = 23; i >= 4; i--) {
+            for (k = 0; k < 10; k++) {
+                if(this.checkColor(i-1, k) != null) {
+                    this.changeColor(i, k, this.checkColor(i-1, k));
                 }
             }
         }
+
+
     }
 
     checkRowsToClear() {
         clearInterval(this.interval);
-        var {grid} = this.state;
-        // console.log('checking');
-        for (i = 23; i >= 0; i--) {
-            if(!this.grid[i].includes(0)) {
-                console.log('clearing row ', i);
-                this.shiftColorDownFrom(i);
-                this.setState({score: this.state.score + 1000});
-
+        var row_was_cleared = false;
+        var num_rows_cleared = 0;
+        var row = 23;
+        for (i = row; i >= 0; i--) {
+            // console.log('checking row', row);
+            if(!this.grid[row].includes(0)) {
+                this.clearRow(row);
+                row++;
+                num_rows_cleared++;
+                row_was_cleared = true;
             }
+            row--;
         }
+
+        if(row_was_cleared) {
+            this.setState({score: this.state.score + 1000 * num_rows_cleared});
+        }
+
         this.interval = setInterval(() => {
 
             this.tick()
-        }, 400)
+        }, this.speed)
     }
 
     canMoveDown(points) {
         var canmove = true;
-        var mycolor = this.checkColor(points[0].i, points[0].j);
         points.map(point => {
             if(this.checkColor(point.i + 1, point.j) == null) {
                 canmove = false;

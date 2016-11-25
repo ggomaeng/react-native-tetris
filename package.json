@@ -7,10 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "~15.3.2",
-    "react-native": "github:exponentjs/react-native#sdk-11.0.3",
     "@exponent/vector-icons": "~2.0.0",
-    "exponent": "~11.0.2"
+    "babel-preset-exponent": "^1.0.0",
+    "exponent": "~11.0.2",
+    "react": "~15.3.2",
+    "react-native": "github:exponentjs/react-native#sdk-11.0.3"
   },
   "jest": {
     "preset": "jest-react-native"
