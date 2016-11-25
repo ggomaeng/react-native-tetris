@@ -65,6 +65,7 @@ export default class Grid extends Component {
     startGame() {
         this.setState({gameOver: false, started: true, score: 0});
         this.loadNextBlock();
+        clearInterval(this.interval);
         this.interval = setInterval(() => {
             this.tick()
         }, this.speed)
@@ -101,6 +102,14 @@ export default class Grid extends Component {
         var bin = color == 'white' ? 0 : 1;
         this.grid[i][j] = bin;
         this.refs[id].changeColor(color);
+    }
+
+    down() {
+        clearInterval(this.interval);
+        this.speed = 10;
+        this.interval = setInterval(() => {
+            this.tick()
+        }, this.speed)
     }
 
     rotate() {
@@ -190,7 +199,6 @@ export default class Grid extends Component {
     shiftCells(direction) {
 
         var points = [];
-        // var can = true;
         for(i = 4; i < 24; i++) { //h is 20, so i want 20 rows
             for(j = 0; j < 10; j++) { // w is 10
                 if(belongs(this.checkColor(i, j))){
@@ -212,6 +220,13 @@ export default class Grid extends Component {
     }
 
     loadNextBlock() {
+        this.speed = 450;
+        clearInterval(this.interval);
+        this.interval = setInterval(() => {
+            this.tick()
+        }, this.speed);
+
+
         var {blocks} = this.state;
         var next = blocks.splice(0,1)[0];
         this.currentBlock = next.type;
@@ -267,7 +282,6 @@ export default class Grid extends Component {
     }
 
     toString() {
-        // console.log(this.refs);
         for (i = 0; i < 24; i++ ) {
             console.log(this.grid[i])
         }
@@ -282,14 +296,14 @@ export default class Grid extends Component {
         }
 
         for (i = row; i >= 4; i--) {
-            if(this.grid[i-1] != null && !this.grid[i-1].includes(1)) {
-                console.log('breaking on row', i);
-                break;
-            }
             for (k = 0; k < 10; k++) {
                 if(this.checkColor(i-1, k) != null) {
                     this.changeColor(i, k, this.checkColor(i-1, k));
                 }
+            }
+            if(this.grid[i-1] != null && !this.grid[i-1].includes(1)) {
+                console.log('breaking on row', i);
+                break;
             }
         }
 
@@ -300,20 +314,8 @@ export default class Grid extends Component {
         clearInterval(this.interval);
         var row_was_cleared = false;
         var num_rows_cleared = 0;
-        // var row = 23;
-        // for (i = row; i >= 0; i--) {
-        //     // console.log('checking row', row);
-        //     if(!this.grid[row].includes(0)) {
-        //         this.clearRow(row);
-        //         row++;
-        //         num_rows_cleared++;
-        //         row_was_cleared = true;
-        //     }
-        //     row--;
-        // }
         var rows_to_clear = [];
         for (i = 23; i >= 4; i--) {
-            // console.log('checking row', row);
             if(!this.grid[i].includes(0)) {
                 console.log('adding row', i);
                 rows_to_clear.push(i);
@@ -329,10 +331,6 @@ export default class Grid extends Component {
         if(row_was_cleared) {
             this.setState({score: this.state.score + 1000 * num_rows_cleared});
         }
-
-        this.interval = setInterval(() => {
-            this.tick()
-        }, this.speed)
     }
 
     canMoveDown(points) {
@@ -374,7 +372,6 @@ export default class Grid extends Component {
         var can = this.canMoveDown(points);
         if(can){
             this.moveDown(points);
-
         };
 
         if(!can && this.grid[3].includes(1)) {
@@ -398,9 +395,13 @@ export default class Grid extends Component {
                     if(belongs(this.checkColor(i,j))){
                         // console.log('blue found on: ', i, j);
                         this.changeColor(i, j, 'gray');
+
+
                     }
                 }
             }
+            //cant move down
+
             this.can = true;
             this.checkRowsToClear();
             this.loadNextBlock();
@@ -462,9 +463,14 @@ export default class Grid extends Component {
                 <TouchableOpacity onPress={() => this.shiftCells('right')}>
                     <Image style={styles.img} source={require('../img/right-filled.png')}/>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.down()}>
+                    <Image style={styles.img} source={require('../img/down_arrow.png')}/>
+                </TouchableOpacity>
+
                 <TouchableOpacity onPress={() => this.rotate()}>
                     <Image style={styles.img} source={require('../img/rotate_arrow.png')}/>
                 </TouchableOpacity>
+
 
 
             </View>
