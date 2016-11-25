@@ -14,7 +14,7 @@ A pure javascript tetris game for React Native framework.
 
 ## Try it out
 
-Try it with Exponent: https://getexponent.com/@community/react-native-tetris
+Try it with Exponent: https://getexponent.com/@sungwoopark95/react-native-tetris
 
 ## Run it locally
 
