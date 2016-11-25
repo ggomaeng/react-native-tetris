@@ -170,20 +170,3 @@ export function rotate(type, p, rotation) {
     
     return points;
 }
-
-function canRotate(points) {
-    var validRotation = true;
-    points.map((point) => {
-        if(point[0] == null) {
-            console.log('invalid rotation');
-            validRotation = false;
-        }
-
-        if(point[1] == null){
-            console.log('invalid rotation');
-            validRotation = false;
-        }
-    });
-
-    return validRotation
-}

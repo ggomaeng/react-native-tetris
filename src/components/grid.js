@@ -126,12 +126,12 @@ export default class Grid extends Component {
 
         var rotated = rotate(this.currentBlock, points, this.rotation);
         if(this.canRotate(rotated)) {
-            console.log('valid rotation');
+            // console.log('valid rotation');
             rotated.map((point) => {
                 this.changeColor(point[0], point[1], color);
             });
         } else {
-            console.log('invalid rotation');
+            // console.log('invalid rotation');
             previous.map((point) => {
                 this.changeColor(point[0], point[1], color);
             });
@@ -281,7 +281,11 @@ export default class Grid extends Component {
             this.changeColor(row, j, 'white');
         }
 
-        for (i = 23; i >= 4; i--) {
+        for (i = row; i >= 4; i--) {
+            if(this.grid[i-1] != null && !this.grid[i-1].includes(1)) {
+                console.log('breaking on row', i);
+                break;
+            }
             for (k = 0; k < 10; k++) {
                 if(this.checkColor(i-1, k) != null) {
                     this.changeColor(i, k, this.checkColor(i-1, k));
@@ -296,24 +300,37 @@ export default class Grid extends Component {
         clearInterval(this.interval);
         var row_was_cleared = false;
         var num_rows_cleared = 0;
-        var row = 23;
-        for (i = row; i >= 0; i--) {
+        // var row = 23;
+        // for (i = row; i >= 0; i--) {
+        //     // console.log('checking row', row);
+        //     if(!this.grid[row].includes(0)) {
+        //         this.clearRow(row);
+        //         row++;
+        //         num_rows_cleared++;
+        //         row_was_cleared = true;
+        //     }
+        //     row--;
+        // }
+        var rows_to_clear = [];
+        for (i = 23; i >= 4; i--) {
             // console.log('checking row', row);
-            if(!this.grid[row].includes(0)) {
-                this.clearRow(row);
-                row++;
-                num_rows_cleared++;
-                row_was_cleared = true;
+            if(!this.grid[i].includes(0)) {
+                console.log('adding row', i);
+                rows_to_clear.push(i);
             }
-            row--;
         }
+
+        rows_to_clear.map((r) => {
+            this.clearRow(r);
+            num_rows_cleared++;
+            row_was_cleared = true;
+        });
 
         if(row_was_cleared) {
             this.setState({score: this.state.score + 1000 * num_rows_cleared});
         }
 
         this.interval = setInterval(() => {
-
             this.tick()
         }, this.speed)
     }
