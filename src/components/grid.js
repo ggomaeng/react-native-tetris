@@ -301,10 +301,10 @@ export default class Grid extends Component {
                     this.changeColor(i, k, this.checkColor(i-1, k));
                 }
             }
-            if(this.grid[i-1] != null && !this.grid[i-1].includes(1)) {
-                console.log('breaking on row', i);
-                break;
-            }
+            // if(this.grid[i-1] != null && !this.grid[i-1].includes(1)) {
+            //     console.log('breaking on row', i);
+            //     break;
+            // }
         }
 
 
