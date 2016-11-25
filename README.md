@@ -5,8 +5,9 @@ A pure javascript tetris game for React Native framework.
 
 1. Fix the row clearing issue. [FIXED + Optimized row clearing]
 2. Handle null exceptions when rotating near the wall or blocks. [FIXED]
-3. Figure out why it randomly crashes.
-4. Add a drop button.
+3. Add a drop button. [FIXED]
+4. Figure out why it randomly crashes.
+
 
 ## #Demo
 
