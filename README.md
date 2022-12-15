@@ -1,21 +1,6 @@
 # react-native-tetris
 A pure javascript tetris game for React Native framework.
 
-## Sponsored by Spurwing
-
-![img](https://github.com/ggomaeng/public/blob/main/spurwing-cover.png?raw=true)
-
-This repo is sponsored by Spurwing, where their API Makes Adding Scheduling Quick, Reliable and Scalable.
-
-- Scheduling API
-- Enterprise Scheduling API
-- Scheduling API for Business
-- Scheduling and Calendar Management API
-- Booking API
-
-Check them out [here](https://github.com/Spurwing/Appointment-Scheduling-API)!
-
-
 ## Todo
 
 1. Fix the row clearing issue. [FIXED + Optimized row clearing]
